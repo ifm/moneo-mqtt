@@ -1,0 +1,34 @@
+name: PR Checks
+
+permissions:
+  contents: read
+
+on:
+  pull_request:
+
+jobs:
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions-rs/toolchain@v1.0.7
+      with:
+        toolchain: stable
+        profile: minimal
+        components: clippy
+    - run: cargo clippy --no-default-features
+    - run: cargo clippy
+    - run: cargo clippy --all-features
+
+  fmt:
+    name: Formatting
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions-rs/toolchain@v1.0.7
+      with:
+        toolchain: stable
+        profile: minimal
+        components: rustfmt
+    - run: cargo fmt --all -- --check
