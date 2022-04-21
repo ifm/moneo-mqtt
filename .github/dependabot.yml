@@ -9,15 +9,9 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-minor", "version-update:semver-patch"]
-    labels:
-      - "type: upkeep"
-      - "domain: Rust"
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
-    labels:
-      - "type: upkeep"
-      - "domain: GitHub Actions"
 
