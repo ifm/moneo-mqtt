@@ -64,3 +64,9 @@ pub struct Value {
     #[serde_as(as = "TimestampMilliSeconds<i64>")]
     timestamp: chrono::DateTime<chrono::Utc>,
 }
+
+impl Value {
+    pub fn into_inner(self) -> serde_json::Value {
+        self.value
+    }
+}
