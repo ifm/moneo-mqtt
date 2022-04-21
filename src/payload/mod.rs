@@ -18,7 +18,7 @@ pub struct Payload {
     values: Vec<Value>,
 }
 
-#[derive(Debug, serde::Deserialize)]
+#[derive(Clone, Debug, serde::Deserialize)]
 pub struct ThingId(uuid::Uuid);
 
 impl ThingId {
@@ -27,7 +27,7 @@ impl ThingId {
     }
 }
 
-#[derive(Debug, serde::Deserialize)]
+#[derive(Clone, Debug, serde::Deserialize)]
 pub struct DataSourceName(String);
 
 impl DataSourceName {
@@ -36,7 +36,7 @@ impl DataSourceName {
     }
 }
 
-#[derive(Debug, serde::Deserialize)]
+#[derive(Clone, Debug, serde::Deserialize)]
 pub struct DevicePath(String);
 
 impl DevicePath {
@@ -45,7 +45,7 @@ impl DevicePath {
     }
 }
 
-#[derive(Debug, serde::Deserialize)]
+#[derive(Clone, Debug, serde::Deserialize)]
 pub struct ProcessDataUnit(String);
 
 impl ProcessDataUnit {
@@ -55,7 +55,7 @@ impl ProcessDataUnit {
 }
 
 #[serde_with::serde_as]
-#[derive(Debug, serde::Deserialize, getset::Getters)]
+#[derive(Clone, Debug, serde::Deserialize, getset::Getters)]
 pub struct Value {
     #[getset(get = "pub")]
     value: serde_json::Value,
