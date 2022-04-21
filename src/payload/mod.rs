@@ -9,9 +9,11 @@ pub struct Payload {
     psid: DataSourceName,
 
     #[getset(get = "pub")]
+    #[serde(rename = "devicePath")]
     device_path: DevicePath,
 
     #[getset(get = "pub")]
+    #[serde(rename = "processDataUnit")]
     process_data_unit: ProcessDataUnit,
 
     #[getset(get = "pub")]
