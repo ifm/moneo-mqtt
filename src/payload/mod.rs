@@ -64,7 +64,7 @@ pub struct Value {
 
     #[getset(get = "pub")]
     #[serde_as(as = "TimestampMilliSeconds<i64>")]
-    timestamp: chrono::DateTime<chrono::Utc>,
+    timestamp: std::time::SystemTime,
 }
 
 impl Value {
