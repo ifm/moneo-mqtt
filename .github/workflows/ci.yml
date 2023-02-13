@@ -39,6 +39,32 @@ jobs:
     - run: cargo +${{matrix.rust}} check ${{env.target}} ${{env.workspace}}
     - run: cargo +${{matrix.rust}} check ${{env.target}} ${{env.workspace}} --all-features
 
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3.0.2
+    - uses: actions-rs/toolchain@v1.0.7
+      with:
+        toolchain: stable
+        profile: minimal
+        components: clippy
+    - run: cargo clippy --no-default-features
+    - run: cargo clippy
+    - run: cargo clippy --all-features
+
+  fmt:
+    name: Formatting
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3.0.2
+    - uses: actions-rs/toolchain@v1.0.7
+      with:
+        toolchain: stable
+        profile: minimal
+        components: rustfmt
+    - run: cargo fmt --all -- --check
+
   # We need some "accummulation" job here because bors fails (timeouts) to
   # listen on matrix builds.
   # Hence, we have some kind of dummy here that bors can listen on
@@ -49,6 +75,8 @@ jobs:
     needs:
       - check
       - test
+      - clippy
+      - fmt
     steps:
       - name: CI succeeded
         run: exit 0
