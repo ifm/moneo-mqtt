@@ -1,8 +1,10 @@
 name: CI
 
 on:
-  pull_request:
   push:
+    branches: [master, staging, trying, release-*]
+  pull_request:
+    branches: [master, release-*]
 
 jobs:
   check:
