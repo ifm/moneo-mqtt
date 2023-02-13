@@ -8,128 +8,127 @@ on:
 
 jobs:
   check:
-    name: Check on Rust ${{matrix.rust}}${{format(' ({0})', matrix.target || matrix.os)}}
-    runs-on: ${{matrix.os}}-latest
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu]
-        rust: ['1.56', stable, beta, nightly]
-    env:
-      target: ${{matrix.target && format('--target={0}', matrix.target)}}
-      workspace: ${{matrix.no-workspace || '--workspace'}}
+        rust:
+          - 1.67.1
     steps:
-    - uses: actions/checkout@v3.0.2
-    - uses: actions-rs/toolchain@v1.0.7
-      with:
-        toolchain: ${{matrix.rust}}
-        profile: minimal
-        target: ${{matrix.target}}
-    - run: cargo +${{matrix.rust}} check ${{env.target}} ${{env.workspace}} --no-default-features
-    - run: cargo +${{matrix.rust}} check ${{env.target}} ${{env.workspace}}
-    - run: cargo +${{matrix.rust}} check ${{env.target}} ${{env.workspace}} --all-features
+      - uses: actions/checkout@v3.0.2
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.rust }}
+      - run: cargo check --all-features
 
   test:
-    name: Test
     needs: [check]
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rust:
+          - 1.67.1
     steps:
-    - uses: actions/checkout@v3.0.2
-    - uses: actions-rs/toolchain@v1.0.7
-    - run: cargo test --no-default-features
-    - run: cargo test
-    - run: cargo test --all-features
+      - uses: actions/checkout@v3.0.2
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.rust }}
+      - run: cargo test --all-features
 
   clippy:
-    name: Clippy
     needs: [check]
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rust:
+          - 1.67.1
     steps:
-    - uses: actions/checkout@v3.0.2
-    - uses: actions-rs/toolchain@v1.0.7
-      with:
-        toolchain: stable
-        profile: minimal
-        components: clippy
-    - run: cargo clippy --no-default-features
-    - run: cargo clippy
-    - run: cargo clippy --all-features
+      - uses: actions/checkout@v3.0.2
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.rust }}
+          components: clippy
+      - run: cargo clippy --all-features
 
   fmt:
     name: Formatting
     needs: [check]
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rust:
+          - 1.67.1
     steps:
-    - uses: actions/checkout@v3.0.2
-    - uses: actions-rs/toolchain@v1.0.7
-      with:
-        toolchain: stable
-        profile: minimal
-        components: rustfmt
-    - run: cargo fmt --all -- --check
+      - uses: actions/checkout@v3.0.2
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.rust }}
+          components: rustfmt
+      - run: cargo fmt --all -- --check
 
   check-advisories:
     needs: [check]
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rust:
+          - 1.67.1
     steps:
       - uses: actions/checkout@v3.0.2
-      - uses: actions-rs/toolchain@v1
+      - uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: stable
-          override: true
-      - uses: actions-rs/install@v0.1
-        with:
-          crate: cargo-deny
-          use-tool-cache: true
-      - name: Check for security advisories and unmaintained crates
-        run: cargo deny check advisories
+          toolchain: ${{ matrix.rust }}
+          components: rustfmt
+      - run: cargo install cargo-deny
+      - run: cargo deny check advisories
 
   check-bans:
     runs-on: ubuntu-latest
     needs: [check]
+    strategy:
+      matrix:
+        rust:
+          - 1.67.1
     steps:
       - uses: actions/checkout@v3.0.2
-      - uses: actions-rs/toolchain@v1
+      - uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: stable
-          override: true
-      - uses: actions-rs/install@v0.1
-        with:
-          crate: cargo-deny
-          use-tool-cache: true
-      - name: Check for banned and duplicated dependencies
-        run: cargo deny check bans
+          toolchain: ${{ matrix.rust }}
+          components: rustfmt
+      - run: cargo install cargo-deny
+      - run: cargo deny check bans
 
   check-licenses:
     runs-on: ubuntu-latest
     needs: [check]
+    strategy:
+      matrix:
+        rust:
+          - 1.67.1
     steps:
       - uses: actions/checkout@v3.0.2
-      - uses: actions-rs/toolchain@v1
+      - uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: stable
-          override: true
-      - uses: actions-rs/install@v0.1
-        with:
-          crate: cargo-deny
-          use-tool-cache: true
-      - name: Check for unauthorized licenses
-        run: cargo deny check licenses
+          toolchain: ${{ matrix.rust }}
+          components: rustfmt
+      - run: cargo install cargo-deny
+      - run: cargo deny check licenses
 
   check-sources:
     runs-on: ubuntu-latest
     needs: [check]
+    strategy:
+      matrix:
+        rust:
+          - 1.67.1
     steps:
       - uses: actions/checkout@v3.0.2
-      - uses: actions-rs/toolchain@v1
+      - uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: stable
-          override: true
-      - uses: actions-rs/install@v0.1
-        with:
-          crate: cargo-deny
-          use-tool-cache: true
-      - name: Checked for unauthorized crate sources
-        run: cargo deny check sources
+          toolchain: ${{ matrix.rust }}
+          components: rustfmt
+      - run: cargo install cargo-deny
+      - run: cargo deny check sources
+
   # We need some "accummulation" job here because bors fails (timeouts) to
   # listen on matrix builds.
   # Hence, we have some kind of dummy here that bors can listen on
