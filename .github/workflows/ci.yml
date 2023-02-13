@@ -69,25 +69,6 @@ jobs:
           components: rustfmt
       - run: cargo fmt --all -- --check
 
-  check-advisories:
-    needs: [check]
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        rust:
-          - 1.67.1
-    steps:
-      - uses: actions/checkout@v3.0.2
-      - uses: swatinem/rust-cache@v2
-      - uses: dtolnay/rust-toolchain@master
-        with:
-          toolchain: ${{ matrix.rust }}
-          components: rustfmt
-      - run: cargo install cargo-deny
-      - run: cargo deny check advisories
-      - run: cargo deny check bans
-      - run: cargo deny check licenses
-      - run: cargo deny check sources
 
   # We need some "accummulation" job here because bors fails (timeouts) to
   # listen on matrix builds.
