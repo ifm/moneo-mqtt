@@ -39,3 +39,16 @@ jobs:
     - run: cargo +${{matrix.rust}} check ${{env.target}} ${{env.workspace}}
     - run: cargo +${{matrix.rust}} check ${{env.target}} ${{env.workspace}} --all-features
 
+  # We need some "accummulation" job here because bors fails (timeouts) to
+  # listen on matrix builds.
+  # Hence, we have some kind of dummy here that bors can listen on
+  ci-success:
+    name: CI
+    if: ${{ success() }}
+    runs-on: ubuntu-latest
+    needs:
+      - check
+      - test
+    steps:
+      - name: CI succeeded
+        run: exit 0
