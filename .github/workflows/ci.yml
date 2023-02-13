@@ -15,6 +15,7 @@ jobs:
           - 1.67.1
     steps:
       - uses: actions/checkout@v3.0.2
+      - uses: swatinem/rust-cache@v2
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
@@ -29,6 +30,7 @@ jobs:
           - 1.67.1
     steps:
       - uses: actions/checkout@v3.0.2
+      - uses: swatinem/rust-cache@v2
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
@@ -43,6 +45,7 @@ jobs:
           - 1.67.1
     steps:
       - uses: actions/checkout@v3.0.2
+      - uses: swatinem/rust-cache@v2
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
@@ -59,6 +62,7 @@ jobs:
           - 1.67.1
     steps:
       - uses: actions/checkout@v3.0.2
+      - uses: swatinem/rust-cache@v2
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
@@ -74,6 +78,7 @@ jobs:
           - 1.67.1
     steps:
       - uses: actions/checkout@v3.0.2
+      - uses: swatinem/rust-cache@v2
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
@@ -90,6 +95,7 @@ jobs:
           - 1.67.1
     steps:
       - uses: actions/checkout@v3.0.2
+      - uses: swatinem/rust-cache@v2
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
@@ -106,6 +112,7 @@ jobs:
           - 1.67.1
     steps:
       - uses: actions/checkout@v3.0.2
+      - uses: swatinem/rust-cache@v2
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
@@ -122,6 +129,7 @@ jobs:
           - 1.67.1
     steps:
       - uses: actions/checkout@v3.0.2
+      - uses: swatinem/rust-cache@v2
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
